@@ -396,9 +396,10 @@ public class StramClient
     ContainerLaunchContext amContainer = Records.newRecord(ContainerLaunchContext.class);
     Map<ApplicationAccessType, String> aclMap = new HashMap<>();
     try {
-      aclMap.put(ApplicationAccessType.VIEW_APP, UserGroupInformation.getLoginUser().getShortUserName());
-      aclMap.put(ApplicationAccessType.MODIFY_APP, UserGroupInformation.getLoginUser().getShortUserName());
-      LOG.debug("Logged in user is {}", UserGroupInformation.getLoginUser().getShortUserName());
+      final String name = UserGroupInformation.getLoginUser().getShortUserName();
+      aclMap.put(ApplicationAccessType.VIEW_APP, name);
+      aclMap.put(ApplicationAccessType.MODIFY_APP, name);
+      LOG.debug("Logged in user is {}", name);
     } catch (IOException e1) {
       LOG.error("Error setting application ACL {}", e1);
     }

@@ -83,7 +83,6 @@ import org.apache.hadoop.yarn.api.ApplicationConstants;
 import org.apache.hadoop.yarn.api.records.ContainerId;
 import org.apache.hadoop.yarn.api.records.ContainerReport;
 import org.apache.hadoop.yarn.client.api.YarnClient;
-import org.apache.hadoop.yarn.client.api.impl.YarnClientImpl;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;
 import org.apache.hadoop.yarn.util.Clock;
 import org.apache.hadoop.yarn.util.SystemClock;
@@ -481,7 +480,7 @@ public class StreamingContainerManager implements PlanContext
         String nodeHttpAddress = nmHost + ":" + nmHttpPort;
         if (allocatedMemoryMB == 0) {
           String url = ConfigUtils.getSchemePrefix(conf) + nodeHttpAddress + "/ws/v1/node/containers/" + ci.id;
-          try (YarnClient rmClient = new YarnClientImpl()) {
+          try (YarnClient rmClient = YarnClient.createYarnClient()) {
             rmClient.init(conf);
             rmClient.start();
             ContainerReport content = rmClient.getContainerReport(ContainerId.fromString(ci.id));
